@@ -4,10 +4,12 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
 
-    <h3>Data Warga</h3>
+    <h3>Data Iuran</h3>
 
-    <a href="{{ route('warga.create') }}" class="btn btn-primary">
-        + Tambah Warga
+    <a href="{{ route('iuran.create') }}" class="btn btn-primary">
+
+        + Tambah Iuran
+
     </a>
 
 </div>
@@ -32,39 +34,40 @@
 
                 <thead class="table-dark">
 
-                <tr>
+                    <tr>
 
-                    <th>No</th>
-                    <th>Nama Kepala Keluarga</th>
-                    <th>Alamat</th>
-                    <th>No Rumah</th>
-                    <th>No HP</th>
-                    <th width="170">Aksi</th>
+                        <th>No</th>
+                        <th>Bulan</th>
+                        <th>Tahun</th>
+                        <th>Nominal</th>
+                        <th width="170">Aksi</th>
 
-                </tr>
+                    </tr>
 
                 </thead>
 
                 <tbody>
 
-                @forelse($wargas as $warga)
+                @forelse($iurans as $iuran)
 
                 <tr>
 
                     <td>{{ $loop->iteration }}</td>
 
-                    <td>{{ $warga->nama_kepala_keluarga }}</td>
+                    <td>{{ $iuran->bulan }}</td>
 
-                    <td>{{ $warga->alamat }}</td>
+                    <td>{{ $iuran->tahun }}</td>
 
-                    <td>{{ $warga->nomor_rumah }}</td>
+                    <td>
 
-                    <td>{{ $warga->nomor_hp }}</td>
+                        Rp {{ number_format($iuran->nominal,0,',','.') }}
+
+                    </td>
 
                     <td>
 
                         <a
-                            href="{{ route('warga.edit',$warga->id) }}"
+                            href="{{ route('iuran.edit',$iuran->id) }}"
                             class="btn btn-warning btn-sm">
 
                             Edit
@@ -72,7 +75,7 @@
                         </a>
 
                         <form
-                            action="{{ route('warga.destroy',$warga->id) }}"
+                            action="{{ route('iuran.destroy',$iuran->id) }}"
                             method="POST"
                             class="d-inline">
 
@@ -81,7 +84,7 @@
 
                             <button
                                 class="btn btn-danger btn-sm"
-                                onclick="return confirm('Hapus data warga?')">
+                                onclick="return confirm('Hapus data iuran?')">
 
                                 Hapus
 
@@ -97,9 +100,9 @@
 
                 <tr>
 
-                    <td colspan="6" class="text-center">
+                    <td colspan="5" class="text-center">
 
-                        Belum ada data warga.
+                        Belum ada data iuran.
 
                     </td>
 

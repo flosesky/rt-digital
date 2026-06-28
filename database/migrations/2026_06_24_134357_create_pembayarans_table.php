@@ -25,15 +25,14 @@ return new class extends Migration
     $table->date('tanggal_bayar')->nullable();
 
     $table->enum('metode_pembayaran', [
-        'cash',
-        'qris'
-    ]);
+    'Cash',
+    'QRIS'
+]);
 
-    $table->enum('status', [
-        'belum_bayar',
-        'lunas'
-    ])->default('belum_bayar');
-
+$table->enum('status', [
+    'Belum Bayar',
+    'Lunas'
+])->default('Belum Bayar');
     $table->string('bukti_pembayaran')->nullable();
 
     $table->timestamps();

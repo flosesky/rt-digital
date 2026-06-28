@@ -4,7 +4,7 @@
 
 <h3 class="mb-4">
 
-    Tambah Warga
+    Edit Warga
 
 </h3>
 
@@ -12,9 +12,12 @@
 
     <div class="card-body">
 
-        <form action="{{ route('warga.store') }}" method="POST">
+        <form
+            action="{{ route('warga.update',$warga->id) }}"
+            method="POST">
 
             @csrf
+            @method('PUT')
 
             <div class="mb-3">
 
@@ -24,6 +27,7 @@
                     type="text"
                     name="nama_kepala_keluarga"
                     class="form-control"
+                    value="{{ $warga->nama_kepala_keluarga }}"
                     required>
 
             </div>
@@ -36,7 +40,7 @@
                     name="alamat"
                     class="form-control"
                     rows="3"
-                    required></textarea>
+                    required>{{ $warga->alamat }}</textarea>
 
             </div>
 
@@ -48,6 +52,7 @@
                     type="text"
                     name="nomor_rumah"
                     class="form-control"
+                    value="{{ $warga->nomor_rumah }}"
                     required>
 
             </div>
@@ -60,13 +65,14 @@
                     type="text"
                     name="nomor_hp"
                     class="form-control"
+                    value="{{ $warga->nomor_hp }}"
                     required>
 
             </div>
 
-            <button class="btn btn-success">
+            <button class="btn btn-primary">
 
-                Simpan
+                Update
 
             </button>
 
