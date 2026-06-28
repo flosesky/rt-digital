@@ -4,31 +4,65 @@
 
 <div class="container-fluid">
 
-    <div class="p-4 mb-4 bg-success text-white rounded shadow">
+    <!-- Header -->
 
-        <h2 class="fw-bold">
+    <div class="card border-0 shadow mb-4">
 
-            👋 Selamat Datang, {{ Auth::user()->name }}
+        <div class="card-body">
 
-        </h2>
+            <div class="d-flex justify-content-between align-items-center">
 
-        <p class="mb-0">
+                <div>
 
-            Kelola seluruh data RT Digital dengan mudah.
+                    <h2 class="fw-bold mb-1">
 
-        </p>
+                        👋 Selamat Datang, Admin RT
+
+                    </h2>
+
+                    <p class="text-muted mb-0">
+
+                        Kelola seluruh data RT Digital melalui dashboard ini.
+
+                    </p>
+
+                </div>
+
+                <div class="text-end">
+
+                    <h5 class="mb-1">
+
+                        {{ now()->translatedFormat('l') }}
+
+                    </h5>
+
+                    <span class="text-muted">
+
+                        {{ now()->translatedFormat('d F Y') }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 
+    <!-- Statistik -->
+
     <div class="row">
 
-        <div class="col-lg-3 col-md-6 mb-4">
+        <!-- Total Warga -->
 
-            <div class="card border-0 shadow h-100">
+        <div class="col-lg-4 col-md-6 mb-4">
+
+            <div class="card shadow border-0">
 
                 <div class="card-body">
 
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-between align-items-center">
 
                         <div>
 
@@ -46,11 +80,8 @@
 
                         </div>
 
-                        <div class="fs-1">
-
-                            👨
-
-                        </div>
+                        <i class="bi bi-people-fill text-primary"
+                           style="font-size:45px;"></i>
 
                     </div>
 
@@ -60,51 +91,15 @@
 
         </div>
 
-        <div class="col-lg-3 col-md-6 mb-4">
+        <!-- Sudah Bayar -->
 
-            <div class="card border-0 shadow h-100">
+        <div class="col-lg-4 col-md-6 mb-4">
 
-                <div class="card-body">
-
-                    <div class="d-flex justify-content-between">
-
-                        <div>
-
-                            <h6 class="text-muted">
-
-                                Total Iuran
-
-                            </h6>
-
-                            <h5 class="fw-bold text-warning">
-
-                                Rp {{ number_format($totalIuran,0,',','.') }}
-
-                            </h5>
-
-                        </div>
-
-                        <div class="fs-1">
-
-                            💰
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-4">
-
-            <div class="card border-0 shadow h-100">
+            <div class="card shadow border-0">
 
                 <div class="card-body">
 
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-between align-items-center">
 
                         <div>
 
@@ -122,11 +117,8 @@
 
                         </div>
 
-                        <div class="fs-1">
-
-                            ✅
-
-                        </div>
+                        <i class="bi bi-cash-coin text-success"
+                           style="font-size:45px;"></i>
 
                     </div>
 
@@ -136,13 +128,15 @@
 
         </div>
 
-        <div class="col-lg-3 col-md-6 mb-4">
+        <!-- Belum Bayar -->
 
-            <div class="card border-0 shadow h-100">
+        <div class="col-lg-4 col-md-6 mb-4">
+
+            <div class="card shadow border-0">
 
                 <div class="card-body">
 
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-between align-items-center">
 
                         <div>
 
@@ -160,11 +154,119 @@
 
                         </div>
 
-                        <div class="fs-1">
+                        <i class="bi bi-exclamation-circle-fill text-danger"
+                           style="font-size:45px;"></i>
 
-                            ❌
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Pengumuman -->
+
+        <div class="col-lg-4 col-md-6 mb-4">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <h6 class="text-muted">
+
+                                Pengumuman
+
+                            </h6>
+
+                            <h2 class="fw-bold text-warning">
+
+                                {{ $totalPengumuman }}
+
+                            </h2>
 
                         </div>
+
+                        <i class="bi bi-megaphone-fill text-warning"
+                           style="font-size:45px;"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Total Iuran -->
+
+        <div class="col-lg-4 col-md-6 mb-4">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <h6 class="text-muted">
+
+                                Total Iuran
+
+                            </h6>
+
+                            <h4 class="fw-bold text-info">
+
+                                Rp {{ number_format($totalIuran,0,',','.') }}
+
+                            </h4>
+
+                        </div>
+
+                        <i class="bi bi-wallet2 text-info"
+                           style="font-size:45px;"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Total Pemasukan -->
+
+        <div class="col-lg-4 col-md-6 mb-4">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <h6 class="text-muted">
+
+                                Total Pemasukan
+
+                            </h6>
+
+                            <h4 class="fw-bold text-success">
+
+                                Rp {{ number_format($totalPemasukan,0,',','.') }}
+
+                            </h4>
+
+                        </div>
+
+                        <i class="bi bi-graph-up-arrow text-success"
+                           style="font-size:45px;"></i>
 
                     </div>
 
@@ -176,99 +278,29 @@
 
     </div>
 
-    <div class="row">
+    <!-- Grafik -->
 
-        <div class="col-lg-8 mb-4">
+    <div class="card shadow border-0">
 
-            <div class="card border-0 shadow">
+    <div class="card-header bg-white">
 
-                <div class="card-header bg-white">
+        <h5 class="mb-0">
 
-                    <h5 class="mb-0">
+            <i class="bi bi-bar-chart-fill text-success"></i>
 
-                        Grafik Pembayaran
+            Grafik Pembayaran
 
-                    </h5>
-
-                </div>
-
-                <div class="card-body">
-
-                    <canvas id="paymentChart" height="120"></canvas>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="col-lg-4 mb-4">
-
-            <div class="card border-0 shadow">
-
-                <div class="card-header bg-white">
-
-                    <h5 class="mb-0">
-
-                        Ringkasan
-
-                    </h5>
-
-                </div>
-
-                <div class="card-body">
-
-                    <p>
-
-                        📢 Total Pengumuman
-
-                        <span class="float-end">
-
-                            <strong>{{ $totalPengumuman }}</strong>
-
-                        </span>
-
-                    </p>
-
-                    <hr>
-
-                    <p>
-
-                        💵 Total Pemasukan
-
-                        <span class="float-end text-success">
-
-                            <strong>
-
-                                Rp {{ number_format($totalPemasukan,0,',','.') }}
-
-                            </strong>
-
-                        </span>
-
-                    </p>
-
-                    <hr>
-
-                    <p class="mb-0">
-
-                        👨 Total Kepala Keluarga
-
-                        <span class="float-end">
-
-                            <strong>{{ $totalWarga }}</strong>
-
-                        </span>
-
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
+        </h5>
 
     </div>
+
+    <div class="card-body">
+
+        <canvas id="paymentChart" height="100"></canvas>
+
+    </div>
+
+</div>
 
 </div>
 
@@ -284,15 +316,23 @@ new Chart(ctx, {
 
     data: {
 
-        labels: @json($labels),
+        labels: @json($labels ?? []),
 
         datasets: [{
 
-            label: 'Pembayaran',
+            label: 'Jumlah Pembayaran',
 
-            data: @json($data),
+            data: @json($data ?? []),
 
-            borderWidth: 1
+            backgroundColor: [
+
+                '#198754'
+
+            ],
+
+            borderRadius: 8,
+
+            borderSkipped: false
 
         }]
 
@@ -302,11 +342,27 @@ new Chart(ctx, {
 
         responsive: true,
 
+        plugins: {
+
+            legend: {
+
+                display: false
+
+            }
+
+        },
+
         scales: {
 
             y: {
 
-                beginAtZero: true
+                beginAtZero: true,
+
+                ticks: {
+
+                    precision: 0
+
+                }
 
             }
 

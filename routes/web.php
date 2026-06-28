@@ -7,7 +7,8 @@ use App\Http\Controllers\Admin\WargaController;
 use App\Http\Controllers\Admin\IuranController;
 use App\Http\Controllers\Admin\PembayaranController;
 use App\Http\Controllers\Admin\PengumumanController;
-use App\Http\Controllers\Warga\DashboardController as WargaDashboardController;
+use App\Http\Controllers\Warga\DashboardController;
+use App\Http\Controllers\Admin\LaporanController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,8 +26,14 @@ Route::middleware('auth')->group(function () {
     return view('warga.qris');
     })->name('warga.qris');
 
-    Route::get('/warga/dashboard', [WargaDashboardController::class, 'index'])
-        ->name('warga.dashboard');
+    Route::get('/warga/dashboard', [DashboardController::class, 'index'])
+    ->name('warga.dashboard');
+
+Route::get('/warga/riwayat', [DashboardController::class, 'riwayat'])
+    ->name('warga.riwayat');
+
+Route::get('/warga/pengumuman', [DashboardController::class, 'pengumuman'])
+    ->name('warga.pengumuman');
 
 });
 
@@ -60,6 +67,11 @@ Route::middleware(['auth', 'admin'])
          )->name('pembayaran.excel');
 
         Route::resource('pengumuman', PengumumanController::class);
+
+        Route::get(
+        '/laporan',
+        [LaporanController::class, 'index']
+        )->name('laporan.index');
 
     });
 

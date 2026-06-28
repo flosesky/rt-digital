@@ -4,67 +4,80 @@
 
 <div class="container-fluid">
 
-    <h2 class="fw-bold mb-4">
+    <div class="card shadow border-0 mb-4">
 
-        Dashboard Warga
+        <div class="card-body">
 
-    </h2>
+            <div class="row align-items-center">
 
-    <div class="row">
+                <div class="col-md-8">
 
-        <div class="col-md-4">
+                    <h2 class="fw-bold">
 
-            <div class="card shadow mb-4">
+                        👋 Selamat Datang,
 
-                <div class="card-header bg-primary text-white">
+                        {{ $user->name }}
 
-                    Profil Warga
+                    </h2>
+
+                    <p class="text-muted">
+
+                        Selamat datang di Sistem Informasi RT Digital.
+                        Gunakan menu di samping untuk melihat status iuran,
+                        pengumuman terbaru dan melakukan pembayaran.
+
+                    </p>
 
                 </div>
 
-                <div class="card-body">
+                <div class="col-md-4 text-end">
 
-                    @if($warga)
+                    <span class="badge bg-success fs-6">
 
-                        <p>
+                        {{ now()->translatedFormat('d F Y') }}
 
-                            <strong>Nama :</strong><br>
+                    </span>
 
-                            {{ $warga->nama_kepala_keluarga }}
+                </div>
 
-                        </p>
+            </div>
 
-                        <p>
+        </div>
 
-                            <strong>Alamat :</strong><br>
+    </div>
 
-                            {{ $warga->alamat }}
+    <div class="row">
 
-                        </p>
+        <div class="col-lg-3 col-md-6 mb-4">
 
-                        <p>
+            <div class="card shadow h-100">
 
-                            <strong>No Rumah :</strong><br>
+                <div class="card-body text-center">
 
-                            {{ $warga->nomor_rumah }}
+                    <i class="bi bi-wallet2 text-success"
+                        style="font-size:55px;"></i>
 
-                        </p>
+                    <h5 class="mt-3">
 
-                        <p>
+                        Status Iuran
 
-                            <strong>No HP :</strong><br>
+                    </h5>
 
-                            {{ $warga->nomor_hp }}
+                    @if($statusIuran=="lunas")
 
-                        </p>
+                        <span class="badge bg-success fs-6">
+
+                            Lunas
+
+                        </span>
 
                     @else
 
-                        <div class="alert alert-warning">
+                        <span class="badge bg-danger fs-6">
 
-                            Data warga belum ditemukan.
+                            Belum Bayar
 
-                        </div>
+                        </span>
 
                     @endif
 
@@ -74,53 +87,94 @@
 
         </div>
 
-        <div class="col-md-8">
+        <div class="col-lg-3 col-md-6 mb-4">
 
-            <div class="card shadow mb-4">
+            <div class="card shadow h-100">
 
-                <div class="card-header bg-success text-white">
+                <div class="card-body text-center">
 
-                    Pengumuman Terbaru
+                    <i class="bi bi-megaphone-fill text-warning"
+                        style="font-size:55px;"></i>
+
+                    <h5 class="mt-3">
+
+                        Pengumuman
+
+                    </h5>
+
+                    <h3 class="fw-bold text-warning">
+
+                        {{ $jumlahPengumuman }}
+
+                    </h3>
+
+                    <small class="text-muted">
+
+                        Total Pengumuman
+
+                    </small>
 
                 </div>
 
-                <div class="card-body">
+            </div>
 
-                    @forelse($pengumumen as $item)
+        </div>
 
-                        <div class="mb-3">
+        <div class="col-lg-3 col-md-6 mb-4">
 
-                            <h5>
+            <div class="card shadow h-100">
 
-                                {{ $item->judul }}
+                <div class="card-body text-center">
 
-                            </h5>
+                    <i class="bi bi-qr-code-scan text-primary"
+                        style="font-size:55px;"></i>
 
-                            <small class="text-muted">
+                    <h5 class="mt-3">
 
-                                {{ $item->tanggal_publish }}
+                        Bayar Iuran
 
-                            </small>
+                    </h5>
 
-                            <p class="mt-2">
+                    <a
+                        href="{{ route('warga.qris') }}"
+                        class="btn btn-success">
 
-                                {{ $item->isi }}
+                        Bayar Sekarang
 
-                            </p>
+                    </a>
 
-                            <hr>
+                </div>
 
-                        </div>
+            </div>
 
-                    @empty
+        </div>
 
-                        <p>
+        <div class="col-lg-3 col-md-6 mb-4">
 
-                            Belum ada pengumuman.
+            <div class="card shadow h-100">
 
-                        </p>
+                <div class="card-body text-center">
 
-                    @endforelse
+                    <i class="bi bi-clock-history text-danger"
+                        style="font-size:55px;"></i>
+
+                    <h5 class="mt-3">
+
+                        Riwayat
+
+                    </h5>
+
+                    <h3 class="fw-bold text-danger">
+
+                        {{ $jumlahPembayaran }}
+
+                    </h3>
+
+                    <small class="text-muted">
+
+                        Total Pembayaran
+
+                    </small>
 
                 </div>
 
@@ -130,9 +184,75 @@
 
     </div>
 
-    <div class="card shadow">
+    <div class="row">
 
-        <div class="card-header bg-dark text-white">
+        <div class="col-lg-7">
+
+            <div class="card shadow mb-4">
+
+                <div class="card-header bg-success text-white">
+
+                    <i class="bi bi-megaphone-fill"></i>
+
+                    Pengumuman Terbaru
+
+                </div>
+
+                <div class="card-body">
+
+                    <ul class="list-group list-group-flush">
+
+                        @forelse($pengumumen as $item)
+
+                        <li class="list-group-item">
+
+                            <strong>
+
+                                {{ $item->judul }}
+
+                            </strong>
+
+                            <br>
+
+                            <small class="text-muted">
+
+                                {{ $item->created_at->format('d M Y') }}
+
+                            </small>
+
+                            <p class="mt-2 mb-0">
+
+                                {{ $item->isi }}
+
+                            </p>
+
+                        </li>
+
+                        @empty
+
+                        <li class="list-group-item text-center">
+
+                            Belum ada pengumuman.
+
+                        </li>
+
+                        @endforelse
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+       <div class="col-lg-5">
+
+    <div class="card shadow mb-4">
+
+        <div class="card-header bg-primary text-white">
+
+            <i class="bi bi-clock-history"></i>
 
             Riwayat Pembayaran
 
@@ -140,16 +260,14 @@
 
         <div class="card-body">
 
-            <table class="table table-bordered">
+            <table class="table table-hover align-middle">
 
                 <thead>
 
                     <tr>
 
-                        <th>No</th>
                         <th>Bulan</th>
-                        <th>Tahun</th>
-                        <th>Nominal</th>
+
                         <th>Status</th>
 
                     </tr>
@@ -158,69 +276,53 @@
 
                 <tbody>
 
-                    @forelse($pembayarans as $item)
+                    @forelse($pembayarans->take(5) as $item)
 
-                        <tr>
+                    <tr>
 
-                            <td>
+                        <td>
 
-                                {{ $loop->iteration }}
+                            {{ $item->iuran->bulan }}
 
-                            </td>
+                            {{ $item->iuran->tahun }}
 
-                            <td>
+                        </td>
 
-                                {{ $item->iuran->bulan }}
+                        <td>
 
-                            </td>
+                            @if($item->status == 'lunas')
 
-                            <td>
+                                <span class="badge bg-success">
 
-                                {{ $item->iuran->tahun }}
+                                    Lunas
 
-                            </td>
+                                </span>
 
-                            <td>
+                            @else
 
-                                Rp {{ number_format($item->iuran->nominal,0,',','.') }}
+                                <span class="badge bg-danger">
 
-                            </td>
+                                    Belum Bayar
 
-                            <td>
+                                </span>
 
-                                @if($item->status == 'lunas')
+                            @endif
 
-                                    <span class="badge bg-success">
+                        </td>
 
-                                        Lunas
-
-                                    </span>
-
-                                @else
-
-                                    <span class="badge bg-danger">
-
-                                        Belum Bayar
-
-                                    </span>
-
-                                @endif
-
-                            </td>
-
-                        </tr>
+                    </tr>
 
                     @empty
 
-                        <tr>
+                    <tr>
 
-                            <td colspan="5" class="text-center">
+                        <td colspan="2" class="text-center text-muted">
 
-                                Belum ada riwayat pembayaran.
+                            Belum ada riwayat pembayaran.
 
-                            </td>
+                        </td>
 
-                        </tr>
+                    </tr>
 
                     @endforelse
 
@@ -228,9 +330,25 @@
 
             </table>
 
+            <div class="text-center mt-3">
+
+                <a
+                    href="{{ route('warga.riwayat') }}"
+                    class="btn btn-outline-primary">
+
+                    Lihat Semua Riwayat
+
+                </a>
+
+            </div>
+
         </div>
 
     </div>
+
+</div>
+
+</div>
 
 </div>
 

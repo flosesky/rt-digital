@@ -1,93 +1,222 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status
-        class="mb-4"
-        :status="session('status')"
-    />
+<!DOCTYPE html>
+<html lang="id">
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+<head>
 
-        <!-- Username -->
-        <div>
-            <x-input-label
-                for="username"
-                :value="__('Username')"
-            />
+    <meta charset="UTF-8">
 
-            <x-text-input
-                id="username"
-                class="block mt-1 w-full"
-                type="text"
-                name="username"
-                :value="old('username')"
-                required
-                autofocus
-                autocomplete="username"
-            />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-            <x-input-error
-                :messages="$errors->get('username')"
-                class="mt-2"
-            />
-        </div>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label
-                for="password"
-                :value="__('Password')"
-            />
+    <title>Login - RT Digital</title>
 
-            <x-text-input
-                id="password"
-                class="block mt-1 w-full"
-                type="password"
-                name="password"
-                required
-                autocomplete="current-password"
-            />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-            <x-input-error
-                :messages="$errors->get('password')"
-                class="mt-2"
-            />
-        </div>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label
-                for="remember_me"
-                class="inline-flex items-center"
-            >
+    <style>
+
+        body{
+
+            background:linear-gradient(135deg,#198754,#20c997);
+
+            min-height:100vh;
+
+            display:flex;
+
+            justify-content:center;
+
+            align-items:center;
+
+        }
+
+        .login-card{
+
+            width:420px;
+
+            border:none;
+
+            border-radius:20px;
+
+            overflow:hidden;
+
+            box-shadow:0 20px 50px rgba(0,0,0,.25);
+
+        }
+
+        .login-header{
+
+            background:#198754;
+
+            color:white;
+
+            padding:35px;
+
+            text-align:center;
+
+        }
+
+        .login-header i{
+
+            font-size:60px;
+
+        }
+
+        .btn-login{
+
+            background:#198754;
+
+            color:white;
+
+            border-radius:10px;
+
+        }
+
+        .btn-login:hover{
+
+            background:#146c43;
+
+            color:white;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="card login-card">
+
+    <div class="login-header">
+
+        <i class="bi bi-buildings-fill"></i>
+
+        <h2 class="mt-3 mb-1">
+
+            RT DIGITAL
+
+        </h2>
+
+        <small>
+
+            Sistem Informasi Pelayanan Warga
+
+        </small>
+
+    </div>
+
+    <div class="card-body p-4">
+
+        @if(session('status'))
+
+            <div class="alert alert-success">
+
+                {{ session('status') }}
+
+            </div>
+
+        @endif
+
+        <form method="POST" action="{{ route('login') }}">
+
+            @csrf
+
+            <div class="mb-3">
+
+                <label class="form-label">
+
+                    Username
+
+                </label>
+
                 <input
-                    id="remember_me"
+                    type="text"
+                    name="username"
+                    class="form-control"
+                    value="{{ old('username') }}"
+                    required
+                    autofocus>
+
+                @error('username')
+
+                    <small class="text-danger">
+
+                        {{ $message }}
+
+                    </small>
+
+                @enderror
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+
+                    Password
+
+                </label>
+
+                <input
+                    type="password"
+                    name="password"
+                    class="form-control"
+                    required>
+
+                @error('password')
+
+                    <small class="text-danger">
+
+                        {{ $message }}
+
+                    </small>
+
+                @enderror
+
+            </div>
+
+            <div class="form-check mb-3">
+
+                <input
+                    class="form-check-input"
                     type="checkbox"
-                    class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
                     name="remember"
-                >
+                    id="remember">
 
-                <span class="ms-2 text-sm text-gray-600">
-                    {{ __('Remember me') }}
-                </span>
-            </label>
-        </div>
+                <label
+                    class="form-check-label"
+                    for="remember">
 
-        <div class="flex items-center justify-end mt-4">
+                    Ingat Saya
 
-            @if (Route::has('password.request'))
-                <a
-                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    href="{{ route('password.request') }}"
-                >
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
+                </label>
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
+            </div>
 
-        </div>
-    </form>
-</x-guest-layout>
+            <button
+                type="submit"
+                class="btn btn-login w-100">
+
+                <i class="bi bi-box-arrow-in-right"></i>
+
+                Login
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <div class="card-footer text-center text-muted">
+
+        © {{ date('Y') }} RT Digital
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
