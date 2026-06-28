@@ -51,13 +51,10 @@
 
                     <li class="nav-item mb-2">
 
-                        <a href="#" class="nav-link text-white">
-
-                            <i class="bi bi-wallet2"></i>
-
-                            Status Iuran
-
-                        </a>
+                        <a href="{{ route('warga.qris') }}" class="nav-link text-white">
+    <i class="bi bi-qr-code-scan"></i>
+    Bayar Iuran (QRIS)
+</a>
 
                     </li>
 

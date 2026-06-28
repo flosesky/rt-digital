@@ -21,6 +21,10 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
 
+    Route::get('/warga/qris', function () {
+    return view('warga.qris');
+    })->name('warga.qris');
+
     Route::get('/warga/dashboard', [WargaDashboardController::class, 'index'])
         ->name('warga.dashboard');
 
@@ -44,6 +48,16 @@ Route::middleware(['auth', 'admin'])
         Route::resource('iuran', IuranController::class);
 
         Route::resource('pembayaran', PembayaranController::class);
+   
+        Route::get(
+        'pembayaran-export/pdf',
+        [PembayaranController::class, 'exportPdf']
+        )->name('pembayaran.pdf');
+
+        Route::get(
+         'pembayaran-export/excel',
+         [PembayaranController::class, 'exportExcel']
+         )->name('pembayaran.excel');
 
         Route::resource('pengumuman', PengumumanController::class);
 

@@ -6,15 +6,41 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
 
-        <h3 class="fw-bold">
-            Data Pembayaran
-        </h3>
+    <h3 class="fw-bold">
 
-        <a href="{{ route('pembayaran.create') }}" class="btn btn-primary">
-            + Tambah Pembayaran
-        </a>
+        Data Pembayaran
 
-    </div>
+    </h3>
+
+    <div>
+
+    <a
+        href="{{ route('pembayaran.pdf') }}"
+        class="btn btn-danger">
+
+        Export PDF
+
+    </a>
+
+    <a
+        href="{{ route('pembayaran.excel') }}"
+        class="btn btn-success">
+
+        Export Excel
+
+    </a>
+
+    <a
+        href="{{ route('pembayaran.create') }}"
+        class="btn btn-primary">
+
+        + Tambah Pembayaran
+
+    </a>
+
+</div>
+
+</div>
 
     @if(session('success'))
 

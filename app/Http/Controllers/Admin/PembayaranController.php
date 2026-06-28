@@ -7,12 +7,23 @@ use App\Models\Pembayaran;
 use App\Models\Warga;
 use App\Models\Iuran;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Exports\PembayaranExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PembayaranController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    public function exportExcel()
+{
+    return Excel::download(
+        new PembayaranExport,
+        'laporan-pembayaran.xlsx'
+    );
+}
+    
     public function index()
     {
         $pembayarans = Pembayaran::with(['warga', 'iuran'])
@@ -155,4 +166,18 @@ class PembayaranController extends Controller
             ->route('pembayaran.index')
             ->with('success', 'Data pembayaran berhasil dihapus.');
     }
+
+    public function exportPdf()
+{
+    $pembayarans = Pembayaran::with(['warga','iuran'])
+        ->orderBy('tanggal_bayar','desc')
+        ->get();
+
+    $pdf = Pdf::loadView(
+        'admin.pembayaran.pdf',
+        compact('pembayarans')
+    );
+
+    return $pdf->download('laporan-pembayaran.pdf');
+}
 }
