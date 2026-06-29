@@ -13,77 +13,71 @@ class AdminDashboardController extends Controller
 {
     public function index()
     {
+        // Statistik
         $totalWarga = Warga::count();
 
-        $totalLunas = Pembayaran::where(
-            'status',
-            'lunas'
-        )->count();
+        $totalLunas = Pembayaran::where('status', 'lunas')->count();
 
-        $totalBelumBayar = Pembayaran::where(
-            'status',
-            'belum_bayar'
-        )->count();
+        $totalBelumBayar = Pembayaran::where('status', 'belum_bayar')->count();
 
         $totalPengumuman = Pengumuman::count();
 
         $totalIuran = Iuran::sum('nominal');
 
-        $totalPemasukan = Pembayaran::where(
-            'status',
-            'lunas'
-        )->with('iuran')
-        ->get()
-        ->sum(function ($item) {
-            return $item->iuran->nominal;
-        });
-$chartData = Pembayaran::select(
-        DB::raw("strftime('%m', tanggal_bayar) as bulan"),
-        DB::raw("COUNT(*) as total")
-    )
-    ->where('status', 'lunas')
-    ->groupBy('bulan')
-    ->orderBy('bulan')
-    ->get();
+        // Total pemasukan
+        $totalPemasukan = Pembayaran::where('status', 'lunas')
+            ->with('iuran')
+            ->get()
+            ->sum(function ($item) {
+                return optional($item->iuran)->nominal ?? 0;
+            });
 
-$labels = [];
-$data = [];
+        // Grafik pembayaran per bulan (PostgreSQL)
+        $chartData = Pembayaran::selectRaw("
+                EXTRACT(MONTH FROM tanggal_bayar) as bulan,
+                COUNT(*) as total
+            ")
+            ->where('status', 'lunas')
+            ->groupByRaw("EXTRACT(MONTH FROM tanggal_bayar)")
+            ->orderByRaw("EXTRACT(MONTH FROM tanggal_bayar)")
+            ->get();
 
-foreach ($chartData as $item) {
+        $namaBulan = [
+            1 => 'Jan',
+            2 => 'Feb',
+            3 => 'Mar',
+            4 => 'Apr',
+            5 => 'Mei',
+            6 => 'Jun',
+            7 => 'Jul',
+            8 => 'Agu',
+            9 => 'Sep',
+            10 => 'Okt',
+            11 => 'Nov',
+            12 => 'Des',
+        ];
 
-    $namaBulan = [
-        '01'=>'Jan',
-        '02'=>'Feb',
-        '03'=>'Mar',
-        '04'=>'Apr',
-        '05'=>'Mei',
-        '06'=>'Jun',
-        '07'=>'Jul',
-        '08'=>'Agu',
-        '09'=>'Sep',
-        '10'=>'Okt',
-        '11'=>'Nov',
-        '12'=>'Des'
-    ];
+        $labels = [];
+        $data = [];
 
-    $labels[] = $namaBulan[$item->bulan];
+        foreach ($chartData as $item) {
 
-    $data[] = $item->total;
-}
+            $bulan = (int) $item->bulan;
 
+            $labels[] = $namaBulan[$bulan] ?? $bulan;
 
-        return view(
-            'admin.dashboard',
-            compact(
-                'totalWarga',
-                'totalLunas',
-                'totalBelumBayar',
-                'totalPengumuman',
-                'totalIuran',
-                'totalPemasukan',
-                'labels',
-                'data'
-            )
-        );
+            $data[] = (int) $item->total;
+        }
+
+        return view('admin.dashboard', compact(
+            'totalWarga',
+            'totalLunas',
+            'totalBelumBayar',
+            'totalPengumuman',
+            'totalIuran',
+            'totalPemasukan',
+            'labels',
+            'data'
+        ));
     }
 }
