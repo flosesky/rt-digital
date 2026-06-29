@@ -8,22 +8,12 @@ use App\Models\Warga;
 use App\Models\Iuran;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
-use App\Exports\PembayaranExport;
-use Maatwebsite\Excel\Facades\Excel;
 
 class PembayaranController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function exportExcel()
-{
-    return Excel::download(
-        new PembayaranExport,
-        'laporan-pembayaran.xlsx'
-    );
-}
-    
     public function index()
     {
         $pembayarans = Pembayaran::with(['warga', 'iuran'])
@@ -62,8 +52,7 @@ class PembayaranController extends Controller
 
         if ($request->hasFile('bukti_pembayaran')) {
 
-            $namaFile = time() . '.' .
-                $request->bukti_pembayaran->extension();
+            $namaFile = time().'.'.$request->bukti_pembayaran->extension();
 
             $request->bukti_pembayaran->move(
                 public_path('uploads/bukti'),
@@ -130,8 +119,7 @@ class PembayaranController extends Controller
 
         if ($request->hasFile('bukti_pembayaran')) {
 
-            $namaFile = time() . '.' .
-                $request->bukti_pembayaran->extension();
+            $namaFile = time().'.'.$request->bukti_pembayaran->extension();
 
             $request->bukti_pembayaran->move(
                 public_path('uploads/bukti'),
@@ -167,17 +155,20 @@ class PembayaranController extends Controller
             ->with('success', 'Data pembayaran berhasil dihapus.');
     }
 
+    /**
+     * Export PDF
+     */
     public function exportPdf()
-{
-    $pembayarans = Pembayaran::with(['warga','iuran'])
-        ->orderBy('tanggal_bayar','desc')
-        ->get();
+    {
+        $pembayarans = Pembayaran::with(['warga', 'iuran'])
+            ->orderBy('tanggal_bayar', 'desc')
+            ->get();
 
-    $pdf = Pdf::loadView(
-        'admin.pembayaran.pdf',
-        compact('pembayarans')
-    );
+        $pdf = Pdf::loadView(
+            'admin.pembayaran.pdf',
+            compact('pembayarans')
+        );
 
-    return $pdf->download('laporan-pembayaran.pdf');
-}
+        return $pdf->download('laporan-pembayaran.pdf');
+    }
 }
