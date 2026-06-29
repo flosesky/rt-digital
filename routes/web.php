@@ -7,11 +7,17 @@ use App\Http\Controllers\Admin\WargaController;
 use App\Http\Controllers\Admin\IuranController;
 use App\Http\Controllers\Admin\PembayaranController;
 use App\Http\Controllers\Admin\PengumumanController;
-use App\Http\Controllers\Warga\DashboardController;
 use App\Http\Controllers\Admin\LaporanController;
+use App\Http\Controllers\Warga\DashboardController;
+
+/*
+|--------------------------------------------------------------------------
+| Homepage
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 /*
@@ -22,19 +28,18 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
 
+    Route::get('/warga/dashboard', [DashboardController::class, 'index'])
+        ->name('warga.dashboard');
+
     Route::get('/warga/qris', function () {
-    return view('warga.qris');
+        return view('warga.qris');
     })->name('warga.qris');
 
-    Route::get('/warga/dashboard', [DashboardController::class, 'index'])
-    ->name('warga.dashboard');
+    Route::get('/warga/riwayat', [DashboardController::class, 'riwayat'])
+        ->name('warga.riwayat');
 
-Route::get('/warga/riwayat', [DashboardController::class, 'riwayat'])
-    ->name('warga.riwayat');
-
-Route::get('/warga/pengumuman', [DashboardController::class, 'pengumuman'])
-    ->name('warga.pengumuman');
-
+    Route::get('/warga/pengumuman', [DashboardController::class, 'pengumuman'])
+        ->name('warga.pengumuman');
 });
 
 /*
@@ -55,24 +60,18 @@ Route::middleware(['auth', 'admin'])
         Route::resource('iuran', IuranController::class);
 
         Route::resource('pembayaran', PembayaranController::class);
-   
-        Route::get(
-        'pembayaran-export/pdf',
-        [PembayaranController::class, 'exportPdf']
-        )->name('pembayaran.pdf');
 
         Route::get(
-         'pembayaran-export/excel',
-         [PembayaranController::class, 'exportExcel']
-         )->name('pembayaran.excel');
+            'pembayaran-export/pdf',
+            [PembayaranController::class, 'exportPdf']
+        )->name('pembayaran.pdf');
 
         Route::resource('pengumuman', PengumumanController::class);
 
         Route::get(
-        '/laporan',
-        [LaporanController::class, 'index']
+            '/laporan',
+            [LaporanController::class, 'index']
         )->name('laporan.index');
-
     });
 
 /*
@@ -91,8 +90,6 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
-
 });
-
 
 require __DIR__.'/auth.php';
