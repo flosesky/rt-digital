@@ -6,41 +6,31 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
 
-    <h3 class="fw-bold">
+        <h3 class="fw-bold">
+            Data Pembayaran
+        </h3>
 
-        Data Pembayaran
+        <div>
 
-    </h3>
+            <a
+                href="{{ route('pembayaran.pdf') }}"
+                class="btn btn-danger">
 
-    <div>
+                Export PDF
 
-    <a
-        href="{{ route('pembayaran.pdf') }}"
-        class="btn btn-danger">
+            </a>
 
-        Export PDF
+            <a
+                href="{{ route('pembayaran.create') }}"
+                class="btn btn-primary">
 
-    </a>
+                + Tambah Pembayaran
 
-    <a
-        href="{{ route('pembayaran.excel') }}"
-        class="btn btn-success">
+            </a>
 
-        Export Excel
+        </div>
 
-    </a>
-
-    <a
-        href="{{ route('pembayaran.create') }}"
-        class="btn btn-primary">
-
-        + Tambah Pembayaran
-
-    </a>
-
-</div>
-
-</div>
+    </div>
 
     @if(session('success'))
 
@@ -79,130 +69,121 @@
 
                     <tbody>
 
-                    @forelse($pembayarans as $item)
+                        @forelse($pembayarans as $item)
 
-                        <tr>
+                            <tr>
 
-                            <td>{{ $loop->iteration }}</td>
+                                <td>{{ $loop->iteration }}</td>
 
-                            <td>
-                                {{ $item->warga->nama_kepala_keluarga }}
-                            </td>
+                                <td>
+                                    {{ $item->warga->nama_kepala_keluarga }}
+                                </td>
 
-                            <td>
-                                {{ $item->iuran->bulan }}
-                            </td>
+                                <td>
+                                    {{ $item->iuran->bulan }}
+                                </td>
 
-                            <td>
-                                {{ $item->iuran->tahun }}
-                            </td>
+                                <td>
+                                    {{ $item->iuran->tahun }}
+                                </td>
 
-                            <td>
+                                <td>
+                                    Rp {{ number_format($item->iuran->nominal,0,',','.') }}
+                                </td>
 
-                                Rp {{ number_format($item->iuran->nominal,0,',','.') }}
+                                <td>
+                                    {{ $item->tanggal_bayar }}
+                                </td>
 
-                            </td>
+                                <td>
+                                    {{ $item->metode_pembayaran }}
+                                </td>
 
-                            <td>
+                                <td>
 
-                                {{ $item->tanggal_bayar }}
+                                    @if($item->status == 'lunas')
 
-                            </td>
+                                        <span class="badge bg-success">
+                                            Lunas
+                                        </span>
 
-                            <td>
+                                    @else
 
-                                {{ $item->metode_pembayaran }}
+                                        <span class="badge bg-danger">
+                                            Belum Bayar
+                                        </span>
 
-                            </td>
+                                    @endif
 
-                            <td>
+                                </td>
 
-                                @if($item->status == 'lunas')
+                                <td>
 
-                                    <span class="badge bg-success">
+                                    @if($item->bukti_pembayaran)
 
-                                        Lunas
+                                        <a
+                                            href="{{ asset('uploads/bukti/'.$item->bukti_pembayaran) }}"
+                                            target="_blank"
+                                            class="btn btn-info btn-sm">
 
-                                    </span>
+                                            Lihat
 
-                                @else
+                                        </a>
 
-                                    <span class="badge bg-danger">
+                                    @else
 
-                                        Belum Bayar
+                                        -
 
-                                    </span>
+                                    @endif
 
-                                @endif
+                                </td>
 
-                            </td>
-
-                            <td>
-
-                                @if($item->bukti_pembayaran)
+                                <td>
 
                                     <a
-                                        href="{{ asset('uploads/bukti/'.$item->bukti_pembayaran) }}"
-                                        target="_blank"
-                                        class="btn btn-info btn-sm">
+                                        href="{{ route('pembayaran.edit',$item->id) }}"
+                                        class="btn btn-warning btn-sm">
 
-                                        Lihat
+                                        Edit
 
                                     </a>
 
-                                @else
+                                    <form
+                                        action="{{ route('pembayaran.destroy',$item->id) }}"
+                                        method="POST"
+                                        class="d-inline">
 
-                                    -
+                                        @csrf
+                                        @method('DELETE')
 
-                                @endif
+                                        <button
+                                            type="submit"
+                                            onclick="return confirm('Yakin ingin menghapus data ini?')"
+                                            class="btn btn-danger btn-sm">
 
-                            </td>
+                                            Hapus
 
-                            <td>
+                                        </button>
 
-                                <a
-                                    href="{{ route('pembayaran.edit',$item->id) }}"
-                                    class="btn btn-warning btn-sm">
+                                    </form>
 
-                                    Edit
+                                </td>
 
-                                </a>
+                            </tr>
 
-                                <form
-                                    action="{{ route('pembayaran.destroy',$item->id) }}"
-                                    method="POST"
-                                    class="d-inline">
+                        @empty
 
-                                    @csrf
-                                    @method('DELETE')
+                            <tr>
 
-                                    <button
-                                        onclick="return confirm('Yakin ingin menghapus data ini?')"
-                                        class="btn btn-danger btn-sm">
+                                <td colspan="10" class="text-center">
 
-                                        Hapus
+                                    Belum ada data pembayaran
 
-                                    </button>
+                                </td>
 
-                                </form>
+                            </tr>
 
-                            </td>
-
-                        </tr>
-
-                    @empty
-
-                        <tr>
-
-                            <td colspan="10" class="text-center">
-
-                                Belum ada data pembayaran
-
-                            </td>
-
-                        </tr>
-
-                    @endforelse
+                        @endforelse
 
                     </tbody>
 
